@@ -26,13 +26,19 @@ public class Customer {
 
     private String phone;
 
-    @ManyToMany(mappedBy = "customers")
-    private Set<Company> companies;
+    private String customerID;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "company_customer",
+            joinColumns = @JoinColumn(name = "company_id"),
+            inverseJoinColumns = @JoinColumn(name = "customer_id"))
+    private List<Company> companies;
 
     @OneToMany(mappedBy = "customer")
     private List<Scoring> scoringList;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
 }

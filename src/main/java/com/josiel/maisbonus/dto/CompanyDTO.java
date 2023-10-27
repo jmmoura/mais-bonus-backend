@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CompanyDTO {
 
+    private Long id;
+
     private String cnpj;
 
     private String name;

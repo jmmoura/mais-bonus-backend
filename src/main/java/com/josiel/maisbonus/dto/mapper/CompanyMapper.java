@@ -23,6 +23,7 @@ public class CompanyMapper {
                 .build();
 
         return Company.builder()
+                .id(companyDTO.getId())
                 .name(companyDTO.getName())
                 .email(companyDTO.getEmail())
                 .phone(companyDTO.getPhone())
@@ -37,6 +38,7 @@ public class CompanyMapper {
                 .build();
 
         return CompanyDTO.builder()
+                .id(company.getId())
                 .cnpj(company.getCnpj())
                 .name(company.getName())
                 .email(company.getEmail())

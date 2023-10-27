@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -39,11 +41,15 @@ public class CustomerService {
 
     public CustomerDTO create(CustomerDTO customerDTO) {
         customerDTO.getUser().setPassword(passwordEncoder.encode(customerDTO.getUser().getPassword()));
-        Customer customer = customerMapper.toEntity(customerDTO);
+        Customer customer = customerRepository.save(customerMapper.toEntity(customerDTO));
 
         Company company = companyMapper.toEntity(companyService.findById(customerDTO.getCompanyID()));
+        List<Company> companies = new ArrayList<>();
+        companies.add(company);
+        customer.setCompanies(companies);
 
-        customer.setCompanies(Set.of(company));
+        long customerID = 1000 + customer.getId();
+        customer.setCustomerID(Long.toString(customerID));
 
         return customerMapper.toDTO(customerRepository.save(customer));
     }

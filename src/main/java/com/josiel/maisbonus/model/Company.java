@@ -29,8 +29,8 @@ public class Company {
 
     private String phone;
 
-    @ManyToMany
-    private Set<Customer> customers;
+    @ManyToMany(mappedBy = "companies")
+    private List<Customer> customers;
 
     @OneToMany(mappedBy = "company")
     private List<Scoring> scoringList;
