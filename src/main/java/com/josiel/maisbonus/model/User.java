@@ -1,6 +1,8 @@
 package com.josiel.maisbonus.model;
 
+import com.josiel.maisbonus.enums.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,7 @@ import java.util.Collections;
 @Data
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class User implements UserDetails {
 
@@ -24,25 +27,15 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Long id;
 
-    private String name;
-
-    private String email;
-
-    private String phone;
+    private String username;
 
     private String password;
 
-    private String role;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private Company company;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private Customer customer;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + role.toUpperCase()));
+        return Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + role.name()));
     }
 
     @Override
@@ -52,7 +45,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override

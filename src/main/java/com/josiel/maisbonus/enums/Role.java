@@ -1,6 +1,6 @@
 package com.josiel.maisbonus.enums;
 
-public enum UserType {
+public enum Role {
     COMPANY,
     CUSTOMER
 }
