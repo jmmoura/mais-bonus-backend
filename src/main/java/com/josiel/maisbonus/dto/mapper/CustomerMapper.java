@@ -41,7 +41,7 @@ public class CustomerMapper {
                 .name(customer.getName())
                 .email(customer.getEmail())
                 .phone(customer.getPhone())
-                .customerID(customer.getCustomerID())
+                .personalId(customer.getPersonalId())
                 .user(userDTO)
                 .build();
     }

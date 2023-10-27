@@ -1,6 +1,8 @@
-package com.josiel.maisbonus.model;
+package com.josiel.maisbonus.dto;
 
-import jakarta.persistence.*;
+import com.josiel.maisbonus.model.Company;
+import com.josiel.maisbonus.model.Customer;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,15 +12,9 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Scoring {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
-    private Long id;
+@AllArgsConstructor
+public class ScoringDTO {
 
     private String description;
 
@@ -28,10 +24,8 @@ public class Scoring {
 
     private LocalDateTime timestamp;
 
-    @ManyToOne
-    private Customer customer;
+    private CustomerDTO customerDTO;
 
-    @ManyToOne
-    private Company company;
+    private CompanyDTO companyDTO;
 
 }

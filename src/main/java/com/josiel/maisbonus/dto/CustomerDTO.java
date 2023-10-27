@@ -21,7 +21,7 @@ public class CustomerDTO {
 
     private Long companyID;
 
-    private String customerID;
+    private String personalId;
 
     private UserDTO user;
 

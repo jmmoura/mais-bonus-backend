@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -26,7 +25,7 @@ public class Customer {
 
     private String phone;
 
-    private String customerID;
+    private String personalId;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(

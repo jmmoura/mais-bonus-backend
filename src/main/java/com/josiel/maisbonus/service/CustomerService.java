@@ -3,7 +3,6 @@ package com.josiel.maisbonus.service;
 import com.josiel.maisbonus.dto.CustomerDTO;
 import com.josiel.maisbonus.dto.mapper.CompanyMapper;
 import com.josiel.maisbonus.dto.mapper.CustomerMapper;
-import com.josiel.maisbonus.enums.Role;
 import com.josiel.maisbonus.model.Company;
 import com.josiel.maisbonus.model.Customer;
 import com.josiel.maisbonus.repository.CustomerRepository;
@@ -12,9 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -39,6 +36,11 @@ public class CustomerService {
                 .orElseThrow(() -> new IllegalArgumentException("Customer ID " + id + " not found"));
     }
 
+    public Customer findByPersonalId(String personalId) {
+        return customerRepository.findByPersonalId(personalId)
+                .orElseThrow(() -> new IllegalArgumentException("Customer Personal ID " + personalId + " not found"));
+    }
+
     public CustomerDTO create(CustomerDTO customerDTO) {
         customerDTO.getUser().setPassword(passwordEncoder.encode(customerDTO.getUser().getPassword()));
         Customer customer = customerRepository.save(customerMapper.toEntity(customerDTO));
@@ -49,7 +51,7 @@ public class CustomerService {
         customer.setCompanies(companies);
 
         long customerID = 1000 + customer.getId();
-        customer.setCustomerID(Long.toString(customerID));
+        customer.setPersonalId(Long.toString(customerID));
 
         return customerMapper.toDTO(customerRepository.save(customer));
     }
