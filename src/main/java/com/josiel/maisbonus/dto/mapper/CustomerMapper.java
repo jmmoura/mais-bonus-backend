@@ -23,6 +23,7 @@ public class CustomerMapper {
                 .build();
 
         return Customer.builder()
+                .id(customerDTO.getId())
                 .name(customerDTO.getName())
                 .email(customerDTO.getEmail())
                 .phone(customerDTO.getPhone())
@@ -37,6 +38,7 @@ public class CustomerMapper {
                 .build();
 
         return CustomerDTO.builder()
+                .id(customer.getId())
                 .cpf(customer.getCpf())
                 .name(customer.getName())
                 .email(customer.getEmail())
