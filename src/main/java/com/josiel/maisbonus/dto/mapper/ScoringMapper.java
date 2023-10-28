@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 @Component
 public class ScoringMapper {
 
-    CompanyMapper companyMapper;
+    private CompanyMapper companyMapper;
 
-    CustomerMapper customerMapper;
+    private CustomerMapper customerMapper;
 
     public Scoring toEntity(ScoringDTO scoringDTO) {
         return Scoring.builder()
@@ -31,8 +31,8 @@ public class ScoringMapper {
                 .purchaseAmount(scoring.getPurchaseAmount())
                 .cashbackAmount(scoring.getCashbackAmount())
                 .timestamp(scoring.getTimestamp())
-                .companyDTO(companyMapper.toDTO(scoring.getCompany()))
-                .customerDTO(customerMapper.toDTO(scoring.getCustomer()))
+                .company(companyMapper.toDTO(scoring.getCompany()))
+                .customer(customerMapper.toDTO(scoring.getCustomer()))
                 .build();
     }
 

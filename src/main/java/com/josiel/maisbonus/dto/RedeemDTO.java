@@ -1,8 +1,5 @@
 package com.josiel.maisbonus.dto;
 
-import com.josiel.maisbonus.model.Company;
-import com.josiel.maisbonus.model.Customer;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,18 +11,15 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScoringDTO {
+public class RedeemDTO {
 
-    private String description;
+    private String code;
 
-    private double purchaseAmount;
-
-    private double cashbackAmount;
+    private double amount;
 
     private LocalDateTime timestamp;
 
     private CustomerDTO customer;
 
     private CompanyDTO company;
-
 }

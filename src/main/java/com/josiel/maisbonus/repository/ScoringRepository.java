@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ScoringRepository extends JpaRepository<Scoring, Long> {
 
-    List<Scoring> findAllById(Long id);
+    List<Scoring> findByCompanyIdAndCustomerId(Long companyId, Long customerId);
 
 }

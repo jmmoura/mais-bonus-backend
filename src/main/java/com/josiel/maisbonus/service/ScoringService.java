@@ -27,8 +27,8 @@ public class ScoringService {
 
     private CompanyMapper companyMapper;
 
-    public List<ScoringDTO> list(Long customerId) {
-        return scoringMapper.toDTOList(scoringRepository.findAllById(customerId));
+    public List<ScoringDTO> list(Long companyId, Long customerId) {
+        return scoringMapper.toDTOList(scoringRepository.findByCompanyIdAndCustomerId(companyId, customerId));
     }
 
     public ScoringDTO findById(Long id) {
@@ -40,10 +40,10 @@ public class ScoringService {
         scoringDTO.setTimestamp(LocalDateTime.now());
         Scoring scoring = scoringMapper.toEntity(scoringDTO);
 
-        Customer customer = customerService.findByPersonalId(scoringDTO.getCustomerDTO().getPersonalId());
+        Customer customer = customerService.findByPersonalId(scoringDTO.getCustomer().getPersonalId());
         scoring.setCustomer(customer);
 
-        Company company = companyMapper.toEntity(companyService.findById(scoringDTO.getCompanyDTO().getId()));
+        Company company = companyMapper.toEntity(companyService.findById(scoringDTO.getCompany().getId()));
         scoring.setCompany(company);
 
         return scoringMapper.toDTO(scoringRepository.save(scoring));
