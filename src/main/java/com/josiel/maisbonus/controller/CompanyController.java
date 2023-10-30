@@ -27,26 +27,26 @@ public class CompanyController {
         return companyService.findById(id);
     }
 
-    @PostMapping
+    @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
     public CompanyDTO create(@RequestBody CompanyDTO companyDTO) {
         return companyService.create(companyDTO);
     }
 
-    @PutMapping("/{id}")
-    public CompanyDTO update(@PathVariable Long id, @RequestBody CompanyDTO companyDTO) {
-        return companyService.update(id, companyDTO);
+    @PutMapping
+    public CompanyDTO update(@RequestBody CompanyDTO companyDTO) {
+        return companyService.update(companyDTO);
     }
 
-    @PutMapping("/{id}/password")
-    public CompanyDTO updatePassword(@PathVariable Long id, @RequestBody CompanyDTO companyDTO) {
-        return companyService.updatePassword(id, companyDTO);
+    @PutMapping("/password")
+    public CompanyDTO updatePassword(@RequestBody CompanyDTO companyDTO) {
+        return companyService.updatePassword(companyDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        companyService.delete(id);
+    public void delete() {
+        companyService.delete();
     }
 
 }

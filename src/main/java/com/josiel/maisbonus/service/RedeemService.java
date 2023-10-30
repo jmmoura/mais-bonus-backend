@@ -1,15 +1,16 @@
 package com.josiel.maisbonus.service;
 
+import com.josiel.maisbonus.authentication.service.SecurityService;
 import com.josiel.maisbonus.dto.CompanyDTO;
 import com.josiel.maisbonus.dto.CustomerDTO;
 import com.josiel.maisbonus.dto.RedeemDTO;
 import com.josiel.maisbonus.dto.ScoringDTO;
 import com.josiel.maisbonus.dto.mapper.CompanyMapper;
-import com.josiel.maisbonus.dto.mapper.CustomerMapper;
 import com.josiel.maisbonus.dto.mapper.RedeemMapper;
 import com.josiel.maisbonus.model.Company;
 import com.josiel.maisbonus.model.Customer;
 import com.josiel.maisbonus.model.Redeem;
+import com.josiel.maisbonus.model.User;
 import com.josiel.maisbonus.repository.RedeemRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,20 +31,22 @@ public class RedeemService {
 
     private CustomerService customerService;
 
+    private SecurityService securityService;
+
     private RedeemMapper redeemMapper;
 
     private CompanyMapper companyMapper;
 
-    private CustomerMapper customerMapper;
-
-    public RedeemDTO find(String code, Long companyId, Long customerId) {
-        return redeemRepository.findByCodeAndCompanyIdAndCustomerId(code, companyId, customerId).map(redeemMapper::toDTO)
+    public RedeemDTO find(String code) {
+        return redeemRepository.findByCodeAndCompany(code, getCompany()).map(redeemMapper::toDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Redeem Code " + code + " not found."));
     }
 
     public RedeemDTO create(RedeemDTO redeemDTO) {
-        Optional<Redeem> optionalRedeem = redeemRepository.findByCompanyIdAndCustomerId(redeemDTO.getCompany().getId(),
-                redeemDTO.getCustomer().getId());
+        User user = securityService.getCurrentUser();
+        Customer customer = customerService.findByUser(user);
+        Optional<Redeem> optionalRedeem = redeemRepository.findByCompanyIdAndCustomer(redeemDTO.getCompany().getId(),
+                customer);
 
         Redeem redeem;
         if (optionalRedeem.isPresent()) {
@@ -52,7 +55,6 @@ public class RedeemService {
         } else {
             redeem = redeemMapper.toEntity(redeemDTO);
 
-            Customer customer = customerMapper.toEntity(customerService.findById(redeemDTO.getCustomer().getId()));
             redeem.setCustomer(customer);
 
             Company company = companyMapper.toEntity(companyService.findById(redeemDTO.getCompany().getId()));
@@ -61,17 +63,27 @@ public class RedeemService {
 
         redeem.setTimestamp(LocalDateTime.now());
 
-        SecureRandom secureRandom = new SecureRandom();
-        int randomInt = secureRandom.nextInt(10000 - 1000) + 1000;
-        String code = Integer.toString(randomInt);
+        String code = getRandomCode(redeem.getCompany());
         redeem.setCode(code);
 
         return redeemMapper.toDTO(redeemRepository.save(redeem));
     }
 
+    private String getRandomCode(Company company) {
+        SecureRandom secureRandom = new SecureRandom();
+        int randomInt = secureRandom.nextInt(10000 - 1000) + 1000;
+        String code = Integer.toString(randomInt);
+
+        while (redeemRepository.findByCodeAndCompany(code, company).isPresent()) {
+            randomInt = secureRandom.nextInt(10000 - 1000) + 1000;
+            code = Integer.toString(randomInt);
+        }
+
+        return Integer.toString(randomInt);
+    }
+
     public RedeemDTO withdraw(RedeemDTO redeemDTO) {
-        Redeem redeem = redeemRepository.findByCodeAndCompanyIdAndCustomerId(redeemDTO.getCode(),
-                redeemDTO.getCompany().getId(), redeemDTO.getCustomer().getId())
+        Redeem redeem = redeemRepository.findByCodeAndCompany(redeemDTO.getCode(), getCompany())
                 .orElseThrow(() -> new IllegalArgumentException("Redeem Code " + redeemDTO.getCode() + " not found."));
 
         CompanyDTO companyDTO = CompanyDTO.builder().id(redeem.getCompany().getId()).build();
@@ -91,6 +103,11 @@ public class RedeemService {
         redeemRepository.delete(redeem);
 
         return redeemMapper.toDTO(redeem);
+    }
+
+    private Company getCompany() {
+        User user = securityService.getCurrentUser();
+        return companyService.findByUser(user);
     }
 
 }

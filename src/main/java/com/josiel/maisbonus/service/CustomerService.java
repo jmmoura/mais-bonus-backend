@@ -1,10 +1,12 @@
 package com.josiel.maisbonus.service;
 
+import com.josiel.maisbonus.authentication.service.SecurityService;
 import com.josiel.maisbonus.dto.CustomerDTO;
 import com.josiel.maisbonus.dto.mapper.CompanyMapper;
 import com.josiel.maisbonus.dto.mapper.CustomerMapper;
 import com.josiel.maisbonus.model.Company;
 import com.josiel.maisbonus.model.Customer;
+import com.josiel.maisbonus.model.User;
 import com.josiel.maisbonus.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +24,8 @@ public class CustomerService {
     private CustomerMapper customerMapper;
 
     private CompanyService companyService;
+
+    private SecurityService securityService;
 
     private CompanyMapper companyMapper;
 
@@ -41,6 +45,11 @@ public class CustomerService {
                 .orElseThrow(() -> new IllegalArgumentException("Customer Personal ID " + personalId + " not found"));
     }
 
+    public Customer findByUser(User user) {
+        return customerRepository.findByUser(user)
+                .orElseThrow(() -> new IllegalArgumentException("User ID " + user.getId() + " not found"));
+    }
+
     public CustomerDTO create(CustomerDTO customerDTO) {
         customerDTO.getUser().setPassword(passwordEncoder.encode(customerDTO.getUser().getPassword()));
         Customer customer = customerRepository.save(customerMapper.toEntity(customerDTO));
@@ -56,28 +65,32 @@ public class CustomerService {
         return customerMapper.toDTO(customerRepository.save(customer));
     }
 
-    public CustomerDTO update(Long id, CustomerDTO customerDTO) {
-        return customerRepository.findById(id)
+    public CustomerDTO update(CustomerDTO customerDTO) {
+        User user = securityService.getCurrentUser();
+        return customerRepository.findByUser(user)
                 .map(customer -> {
                     customer.setName(customerDTO.getName());
                     customer.setEmail(customerDTO.getEmail());
                     customer.setPhone(customerDTO.getPhone());
                     return customerMapper.toDTO(customerRepository.save(customer));
                 })
-                .orElseThrow(() -> new IllegalArgumentException("Customer ID " + id + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User ID " + user.getId() + " not found"));
     }
 
-    public CustomerDTO updatePassword(Long id, CustomerDTO customerDTO) {
-        return customerRepository.findById(id)
+    public CustomerDTO updatePassword(CustomerDTO customerDTO) {
+        User user = securityService.getCurrentUser();
+        return customerRepository.findByUser(user)
                 .map(customer -> {
                     customer.getUser().setPassword(passwordEncoder.encode(customerDTO.getUser().getPassword()));
                     return customerMapper.toDTO(customerRepository.save(customer));
                 })
-                .orElseThrow(() -> new IllegalArgumentException("Customer ID " + id + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User ID " + user.getId() + " not found"));
     }
 
-    public void delete(Long id) {
-        customerRepository.delete(customerRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Customer ID " + id + " not found")));
+    public void delete() {
+        User user = securityService.getCurrentUser();
+        customerRepository.delete(customerRepository.findByUser(user)
+                .orElseThrow(() -> new IllegalArgumentException("User ID " + user.getId() + " not found")));
     }
+
 }

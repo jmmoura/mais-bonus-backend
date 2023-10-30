@@ -1,11 +1,12 @@
 package com.josiel.maisbonus.service;
 
+import com.josiel.maisbonus.authentication.service.SecurityService;
 import com.josiel.maisbonus.dto.ScoringDTO;
-import com.josiel.maisbonus.dto.mapper.CompanyMapper;
 import com.josiel.maisbonus.dto.mapper.ScoringMapper;
 import com.josiel.maisbonus.model.Company;
 import com.josiel.maisbonus.model.Customer;
 import com.josiel.maisbonus.model.Scoring;
+import com.josiel.maisbonus.model.User;
 import com.josiel.maisbonus.repository.ScoringRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,14 @@ public class ScoringService {
 
     private CompanyService companyService;
 
+    private SecurityService securityService;
+
     private ScoringMapper scoringMapper;
 
-    private CompanyMapper companyMapper;
-
-    public List<ScoringDTO> list(Long companyId, Long customerId) {
-        return scoringMapper.toDTOList(scoringRepository.findByCompanyIdAndCustomerId(companyId, customerId));
+    public List<ScoringDTO> list(Long companyId) {
+        User user = securityService.getCurrentUser();
+        Customer customer = customerService.findByUser(user);
+        return scoringMapper.toDTOList(scoringRepository.findByCompanyIdAndCustomer(companyId, customer));
     }
 
     public ScoringDTO findById(Long id) {
@@ -43,7 +46,8 @@ public class ScoringService {
         Customer customer = customerService.findByPersonalId(scoringDTO.getCustomer().getPersonalId());
         scoring.setCustomer(customer);
 
-        Company company = companyMapper.toEntity(companyService.findById(scoringDTO.getCompany().getId()));
+        User user = securityService.getCurrentUser();
+        Company company = companyService.findByUser(user);
         scoring.setCompany(company);
 
         return scoringMapper.toDTO(scoringRepository.save(scoring));

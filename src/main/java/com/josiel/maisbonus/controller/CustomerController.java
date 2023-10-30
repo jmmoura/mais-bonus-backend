@@ -27,26 +27,26 @@ public class CustomerController {
         return customerService.findById(id);
     }
 
-    @PostMapping
+    @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDTO create(@RequestBody CustomerDTO customerDTO) {
         return customerService.create(customerDTO);
     }
 
-    @PutMapping("/{id}")
-    public CustomerDTO update(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
-        return customerService.update(id, customerDTO);
+    @PutMapping
+    public CustomerDTO update(@RequestBody CustomerDTO customerDTO) {
+        return customerService.update(customerDTO);
     }
 
-    @PutMapping("/{id}/password")
-    public CustomerDTO updatePassword(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
-        return customerService.updatePassword(id, customerDTO);
+    @PutMapping("/password")
+    public CustomerDTO updatePassword(@RequestBody CustomerDTO customerDTO) {
+        return customerService.updatePassword(customerDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        customerService.delete(id);
+    public void delete() {
+        customerService.delete();
     }
 
 }

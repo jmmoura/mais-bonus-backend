@@ -18,8 +18,8 @@ public class ScoringController {
     private ScoringService scoringService;
 
     @GetMapping
-    public List<ScoringDTO> list(@RequestParam Long companyId, @RequestParam Long customerId) {
-        return scoringService.list(companyId, customerId);
+    public List<ScoringDTO> list(@RequestParam Long companyId) {
+        return scoringService.list(companyId);
     }
 
     @GetMapping("/{id}")

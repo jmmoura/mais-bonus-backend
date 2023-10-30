@@ -16,8 +16,8 @@ public class RedeemController {
     private RedeemService redeemService;
 
     @GetMapping
-    public RedeemDTO find(@RequestParam String code, @RequestParam Long companyId, @RequestParam Long customerId) {
-        return redeemService.find(code, companyId, customerId);
+    public RedeemDTO find(@RequestParam String code) {
+        return redeemService.find(code);
     }
 
     @PostMapping
