@@ -18,7 +18,7 @@ public class CustomerMapper {
     public Customer toEntity(CustomerDTO customerDTO) {
         User user = User.builder()
                 .username(customerDTO.getEmail())
-                .password(customerDTO.getUser().getPassword())
+                .password(customerDTO.getPassword())
                 .role(Role.CUSTOMER)
                 .build();
 
@@ -44,7 +44,6 @@ public class CustomerMapper {
                 .email(customer.getEmail())
                 .phone(customer.getPhone())
                 .personalId(customer.getPersonalId())
-                .user(userDTO)
                 .build();
     }
 

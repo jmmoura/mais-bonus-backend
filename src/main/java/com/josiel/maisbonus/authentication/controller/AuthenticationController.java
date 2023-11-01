@@ -23,8 +23,6 @@ public class AuthenticationController {
         final String username = credentialsDTO.getUsername();
         final String password = credentialsDTO.getPassword();
 
-        final String token = securityService.authenticate(username, password);
-
-        return new AuthenticationDTO(token);
+        return securityService.authenticate(username, password);
     }
 }

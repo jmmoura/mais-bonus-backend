@@ -21,6 +21,6 @@ public class CompanyDTO {
 
     private String phone;
 
-    private UserDTO user;
+    private String password;
 
 }

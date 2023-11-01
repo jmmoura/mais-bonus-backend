@@ -1,13 +1,17 @@
 package com.josiel.maisbonus.authentication.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.josiel.maisbonus.enums.Role;
+import lombok.*;
 
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
 @Setter
 public class AuthenticationDTO {
 
-    private final String token;
+    private String token;
+
+    private Role role;
+
 }

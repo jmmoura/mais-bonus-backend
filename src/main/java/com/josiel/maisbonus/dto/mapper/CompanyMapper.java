@@ -18,7 +18,7 @@ public class CompanyMapper {
     public Company toEntity(CompanyDTO companyDTO) {
         User user = User.builder()
                 .username(companyDTO.getEmail())
-                .password(companyDTO.getUser().getPassword())
+                .password(companyDTO.getPassword())
                 .role(Role.COMPANY)
                 .build();
 
@@ -33,9 +33,9 @@ public class CompanyMapper {
     }
 
     public CompanyDTO toDTO(Company company) {
-        UserDTO userDTO = UserDTO.builder()
-                .userName(company.getUser().getUsername())
-                .build();
+//        UserDTO userDTO = UserDTO.builder()
+//                .userName(company.getUser().getUsername())
+//                .build();
 
         return CompanyDTO.builder()
                 .id(company.getId())
@@ -43,7 +43,7 @@ public class CompanyMapper {
                 .name(company.getName())
                 .email(company.getEmail())
                 .phone(company.getPhone())
-                .user(userDTO)
+//                .user(userDTO)
                 .build();
     }
 

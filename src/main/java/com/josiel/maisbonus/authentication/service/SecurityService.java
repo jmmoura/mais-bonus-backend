@@ -1,5 +1,6 @@
 package com.josiel.maisbonus.authentication.service;
 
+import com.josiel.maisbonus.authentication.dto.AuthenticationDTO;
 import com.josiel.maisbonus.repository.UserRepository;
 import com.josiel.maisbonus.authentication.utils.JWTUtils;
 import com.josiel.maisbonus.enums.Role;
@@ -30,7 +31,7 @@ public class SecurityService implements UserDetailsService {
     }
 
     @Transactional
-    public String authenticate(final String username, final String password) {
+    public AuthenticationDTO authenticate(final String username, final String password) {
         final Authentication authentication =
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(username, password)
@@ -40,7 +41,10 @@ public class SecurityService implements UserDetailsService {
 
         final User user = loadUserByUsername(username);
 
-        return JWTUtils.generateToken(user.getId(), user.getUsername(), user.getRole());
+        return AuthenticationDTO.builder()
+                .token(JWTUtils.generateToken(user.getId(), user.getUsername(), user.getRole()))
+                .role(user.getRole())
+                .build();
     }
 
     @Transactional

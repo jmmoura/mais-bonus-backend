@@ -39,7 +39,7 @@ public class CompanyService {
     }
 
     public CompanyDTO create(CompanyDTO companyDTO) {
-        companyDTO.getUser().setPassword(passwordEncoder.encode(companyDTO.getUser().getPassword()));
+        companyDTO.setPassword(passwordEncoder.encode(companyDTO.getPassword()));
         Company company = companyMapper.toEntity(companyDTO);
         return companyMapper.toDTO(companyRepository.save(company));
     }
@@ -60,7 +60,7 @@ public class CompanyService {
         User user = securityService.getCurrentUser();
         return companyRepository.findByUser(user)
                 .map(company -> {
-                    company.getUser().setPassword(passwordEncoder.encode(companyDTO.getUser().getPassword()));
+                    company.getUser().setPassword(passwordEncoder.encode(companyDTO.getPassword()));
                     return companyMapper.toDTO(companyRepository.save(company));
                 })
                 .orElseThrow(() -> new IllegalArgumentException("User ID " + user.getId() + " not found"));

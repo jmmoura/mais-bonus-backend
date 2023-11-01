@@ -51,15 +51,15 @@ public class CustomerService {
     }
 
     public CustomerDTO create(CustomerDTO customerDTO) {
-        customerDTO.getUser().setPassword(passwordEncoder.encode(customerDTO.getUser().getPassword()));
+        customerDTO.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
         Customer customer = customerRepository.save(customerMapper.toEntity(customerDTO));
 
-        Company company = companyMapper.toEntity(companyService.findById(customerDTO.getCompanyID()));
+        Company company = companyMapper.toEntity(companyService.findById(customerDTO.getCompanyId()));
         List<Company> companies = new ArrayList<>();
         companies.add(company);
         customer.setCompanies(companies);
 
-        long customerID = 1000 + customer.getId();
+        long customerID = 10000 + customer.getId();
         customer.setPersonalId(Long.toString(customerID));
 
         return customerMapper.toDTO(customerRepository.save(customer));
@@ -81,7 +81,7 @@ public class CustomerService {
         User user = securityService.getCurrentUser();
         return customerRepository.findByUser(user)
                 .map(customer -> {
-                    customer.getUser().setPassword(passwordEncoder.encode(customerDTO.getUser().getPassword()));
+                    customer.getUser().setPassword(passwordEncoder.encode(customerDTO.getPassword()));
                     return customerMapper.toDTO(customerRepository.save(customer));
                 })
                 .orElseThrow(() -> new IllegalArgumentException("User ID " + user.getId() + " not found"));

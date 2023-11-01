@@ -21,10 +21,10 @@ public class CustomerDTO {
 
     private String phone;
 
-    private Long companyID;
+    private Long companyId;
 
     private String personalId;
 
-    private UserDTO user;
+    private String password;
 
 }
