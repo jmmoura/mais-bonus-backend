@@ -45,7 +45,7 @@ public class RedeemService {
     public RedeemDTO create(RedeemDTO redeemDTO) {
         User user = securityService.getCurrentUser();
         Customer customer = customerService.findByUser(user);
-        Optional<Redeem> optionalRedeem = redeemRepository.findByCompanyIdAndCustomer(redeemDTO.getCompany().getId(),
+        Optional<Redeem> optionalRedeem = redeemRepository.findByCompanyIdAndCustomer(redeemDTO.getCompanyId(),
                 customer);
 
         Redeem redeem;
@@ -57,7 +57,7 @@ public class RedeemService {
 
             redeem.setCustomer(customer);
 
-            Company company = companyMapper.toEntity(companyService.findById(redeemDTO.getCompany().getId()));
+            Company company = companyMapper.toEntity(companyService.findById(redeemDTO.getCompanyId()));
             redeem.setCompany(company);
         }
 
@@ -94,8 +94,8 @@ public class RedeemService {
                 .description("Resgate")
                 .cashbackAmount(redeem.getAmount() * -1)
                 .timestamp(LocalDateTime.now())
+                .customerPersonalId(customerDTO.getPersonalId())
                 .company(companyDTO)
-                .customer(customerDTO)
                 .build();
 
         scoringService.create(scoringDTO);

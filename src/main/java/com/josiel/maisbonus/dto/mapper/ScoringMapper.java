@@ -14,8 +14,6 @@ public class ScoringMapper {
 
     private CompanyMapper companyMapper;
 
-    private CustomerMapper customerMapper;
-
     public Scoring toEntity(ScoringDTO scoringDTO) {
         return Scoring.builder()
                 .description(scoringDTO.getDescription())
@@ -32,7 +30,7 @@ public class ScoringMapper {
                 .cashbackAmount(scoring.getCashbackAmount())
                 .timestamp(scoring.getTimestamp())
                 .company(companyMapper.toDTO(scoring.getCompany()))
-                .customer(customerMapper.toDTO(scoring.getCustomer()))
+                .customerPersonalId(scoring.getCustomer().getPersonalId())
                 .build();
     }
 

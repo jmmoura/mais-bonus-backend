@@ -14,4 +14,8 @@ public class AuthenticationDTO {
 
     private Role role;
 
+    private Long companyId;
+
+    private String customerPersonalId;
+
 }

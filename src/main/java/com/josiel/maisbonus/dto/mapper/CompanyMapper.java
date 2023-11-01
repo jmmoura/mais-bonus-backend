@@ -33,17 +33,12 @@ public class CompanyMapper {
     }
 
     public CompanyDTO toDTO(Company company) {
-//        UserDTO userDTO = UserDTO.builder()
-//                .userName(company.getUser().getUsername())
-//                .build();
-
         return CompanyDTO.builder()
                 .id(company.getId())
                 .cnpj(company.getCnpj())
                 .name(company.getName())
                 .email(company.getEmail())
                 .phone(company.getPhone())
-//                .user(userDTO)
                 .build();
     }
 

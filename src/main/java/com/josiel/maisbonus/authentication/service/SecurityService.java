@@ -1,10 +1,14 @@
 package com.josiel.maisbonus.authentication.service;
 
 import com.josiel.maisbonus.authentication.dto.AuthenticationDTO;
+import com.josiel.maisbonus.model.Company;
+import com.josiel.maisbonus.model.Customer;
 import com.josiel.maisbonus.repository.UserRepository;
 import com.josiel.maisbonus.authentication.utils.JWTUtils;
 import com.josiel.maisbonus.enums.Role;
 import com.josiel.maisbonus.model.User;
+import com.josiel.maisbonus.service.CompanyService;
+import com.josiel.maisbonus.service.CustomerService;
 import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +28,17 @@ public class SecurityService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    private final CompanyService companyService;
+
+    private final CustomerService customerService;
+
     @Autowired
-    public SecurityService(@Lazy AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public SecurityService(@Lazy AuthenticationManager authenticationManager, UserRepository userRepository,
+                           @Lazy CompanyService companyService, @Lazy CustomerService customerService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
+        this.companyService = companyService;
+        this.customerService = customerService;
     }
 
     @Transactional
@@ -41,9 +52,22 @@ public class SecurityService implements UserDetailsService {
 
         final User user = loadUserByUsername(username);
 
+        Long companyId;
+        String customerPersonalId = null;
+        if (user.getRole().equals(Role.CUSTOMER)) {
+            Customer customer = customerService.findByUser(user);
+            companyId = customer.getCompanies().get(0).getId();
+            customerPersonalId = customer.getPersonalId();
+        } else {
+            Company company = companyService.findByUser(user);
+            companyId = company.getId();
+        }
+
         return AuthenticationDTO.builder()
                 .token(JWTUtils.generateToken(user.getId(), user.getUsername(), user.getRole()))
                 .role(user.getRole())
+                .companyId(companyId)
+                .customerPersonalId(customerPersonalId)
                 .build();
     }
 

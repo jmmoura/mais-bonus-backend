@@ -43,7 +43,7 @@ public class ScoringService {
         scoringDTO.setTimestamp(LocalDateTime.now());
         Scoring scoring = scoringMapper.toEntity(scoringDTO);
 
-        Customer customer = customerService.findByPersonalId(scoringDTO.getCustomer().getPersonalId());
+        Customer customer = customerService.findByPersonalId(scoringDTO.getCustomerPersonalId());
         scoring.setCustomer(customer);
 
         User user = securityService.getCurrentUser();

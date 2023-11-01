@@ -1,8 +1,5 @@
 package com.josiel.maisbonus.dto;
 
-import com.josiel.maisbonus.model.Company;
-import com.josiel.maisbonus.model.Customer;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +21,7 @@ public class ScoringDTO {
 
     private LocalDateTime timestamp;
 
-    private CustomerDTO customer;
+    private String customerPersonalId;
 
     private CompanyDTO company;
 

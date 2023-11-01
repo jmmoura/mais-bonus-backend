@@ -1,9 +1,7 @@
 package com.josiel.maisbonus.dto.mapper;
 
 import com.josiel.maisbonus.dto.RedeemDTO;
-import com.josiel.maisbonus.dto.ScoringDTO;
 import com.josiel.maisbonus.model.Redeem;
-import com.josiel.maisbonus.model.Scoring;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +11,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Component
 public class RedeemMapper {
-
-    private CompanyMapper companyMapper;
 
     private CustomerMapper customerMapper;
 
@@ -31,7 +27,7 @@ public class RedeemMapper {
                 .code(redeem.getCode())
                 .amount(redeem.getAmount())
                 .timestamp(redeem.getTimestamp())
-                .company(companyMapper.toDTO(redeem.getCompany()))
+                .companyId(redeem.getCompany().getId())
                 .customer(customerMapper.toDTO(redeem.getCustomer()))
                 .build();
     }

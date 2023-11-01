@@ -21,5 +21,5 @@ public class RedeemDTO {
 
     private CustomerDTO customer;
 
-    private CompanyDTO company;
+    private Long companyId;
 }
