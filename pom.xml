@@ -97,7 +97,7 @@
 				<version>3.0.7</version>
 				<configuration>
 					<processTypes>
-						<web>java $JAVA_OPTS -cp target/classes:target/dependency/* com.josiel.maisbonus.MaisbonusApplication</web>
+						<web>java -Dserver.port=$PORT $JAVA_OPTS -cp target/classes:target/dependency/* com.josiel.maisbonus.MaisbonusApplication</web>
 					</processTypes>
 				</configuration>
 			</plugin>
