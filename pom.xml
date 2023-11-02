@@ -11,6 +11,7 @@
 	<groupId>com.josiel</groupId>
 	<artifactId>maisbonus</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>maisbonus</name>
 	<description>Mais Bônus Application</description>
 	<properties>
