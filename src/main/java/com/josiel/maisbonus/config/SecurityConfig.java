@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,6 +25,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @AllArgsConstructor
 @Configuration
 @EnableWebSecurity
@@ -39,7 +40,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(CorsConfigurer::disable)
+                .cors(withDefaults())
                 .csrf(CsrfConfigurer::disable)
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
