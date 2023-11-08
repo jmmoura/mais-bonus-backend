@@ -69,7 +69,6 @@ public class CustomerService {
         User user = securityService.getCurrentUser();
         return customerRepository.findByUser(user)
                 .map(customer -> {
-                    customer.setName(customerDTO.getName());
                     customer.setEmail(customerDTO.getEmail());
                     customer.setPhone(customerDTO.getPhone());
                     return customerMapper.toDTO(customerRepository.save(customer));

@@ -28,7 +28,7 @@ public class JWTUtils {
                         .claim(TOKEN_CLAIM_ROLES, userRole)
                         .setIssuedAt(now)
                         .setNotBefore(now)
-                        .setExpiration(exp)
+//                        .setExpiration(exp)
                         .signWith(TOKEN_SECRET_KEY)
                         .compact();
 

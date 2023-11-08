@@ -53,9 +53,11 @@ public class SecurityService implements UserDetailsService {
         final User user = loadUserByUsername(username);
 
         Long companyId;
+        Long customerId = null;
         String customerPersonalId = null;
         if (user.getRole().equals(Role.CUSTOMER)) {
             Customer customer = customerService.findByUser(user);
+            customerId = customer.getId();
             companyId = customer.getCompanies().get(0).getId();
             customerPersonalId = customer.getPersonalId();
         } else {
@@ -66,6 +68,7 @@ public class SecurityService implements UserDetailsService {
         return AuthenticationDTO.builder()
                 .token(JWTUtils.generateToken(user.getId(), user.getUsername(), user.getRole()))
                 .role(user.getRole())
+                .customerId(customerId)
                 .companyId(companyId)
                 .customerPersonalId(customerPersonalId)
                 .build();

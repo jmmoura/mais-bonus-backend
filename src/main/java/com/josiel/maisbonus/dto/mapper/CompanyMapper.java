@@ -1,7 +1,6 @@
 package com.josiel.maisbonus.dto.mapper;
 
 import com.josiel.maisbonus.dto.CompanyDTO;
-import com.josiel.maisbonus.dto.UserDTO;
 import com.josiel.maisbonus.enums.Role;
 import com.josiel.maisbonus.model.Company;
 import com.josiel.maisbonus.model.User;

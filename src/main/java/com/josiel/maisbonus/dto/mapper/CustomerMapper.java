@@ -1,7 +1,6 @@
 package com.josiel.maisbonus.dto.mapper;
 
 import com.josiel.maisbonus.dto.CustomerDTO;
-import com.josiel.maisbonus.dto.UserDTO;
 import com.josiel.maisbonus.enums.Role;
 import com.josiel.maisbonus.model.Customer;
 import com.josiel.maisbonus.model.User;
@@ -33,10 +32,6 @@ public class CustomerMapper {
     }
 
     public CustomerDTO toDTO(Customer customer) {
-        UserDTO userDTO = UserDTO.builder()
-                .userName(customer.getUser().getUsername())
-                .build();
-
         return CustomerDTO.builder()
                 .id(customer.getId())
                 .cpf(customer.getCpf())
