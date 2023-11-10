@@ -48,7 +48,6 @@ public class CompanyService {
         User user = securityService.getCurrentUser();
         return companyRepository.findByUser(user)
                 .map(company -> {
-                    company.setName(companyDTO.getName());
                     company.setEmail(companyDTO.getEmail());
                     company.setPhone(companyDTO.getPhone());
                     return companyMapper.toDTO(companyRepository.save(company));
